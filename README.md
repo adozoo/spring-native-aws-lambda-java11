@@ -1,6 +1,4 @@
-# This From 
-
-# https://github.com/muhamadto/spring-native-aws-lambda
+# From [muhamadto](https://github.com/muhamadto/spring-native-aws-lambda)
 
 ## Thanks For muhamadto
 

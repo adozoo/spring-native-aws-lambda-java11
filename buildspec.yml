@@ -34,8 +34,7 @@ phases:
        - pwd
        - ls -asl
        - docker ps
-       - yum -y update
-       - sudo chmod 666 /var/run/docker.sock
+       - chmod 666 /var/run/docker.sock
        - mkdir target
        - chmod 777 target
   build:
@@ -45,6 +44,7 @@ phases:
        - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
        - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
        - ls -asl target/
+       - pwd
        - aws cloudformation package --template-file cfn/template.yaml --output-template-file packaged.yaml --s3-bucket codepipeline-us-east-2-467398234360
 artifacts:
   files:

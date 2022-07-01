@@ -22,6 +22,7 @@ phases:
        - chmod 777 target
        - chmod 777 *
        - df -H
+       - cat ~/.docker/config.json
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .

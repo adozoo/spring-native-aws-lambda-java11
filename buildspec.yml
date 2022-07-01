@@ -31,7 +31,7 @@ phases:
     commands:
        - echo Logging in to Amazon ECR...
        - whoami
-       - systemctl start docker
+      #  - systemctl start docker
        - pwd
        - ls -asl
        - docker version

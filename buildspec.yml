@@ -1,20 +1,3 @@
-# version: 0.2
-# phases:
-#   install:
-#     runtime-versions:
-#       java: corretto8
-#   build:
-#     commands:
-#       - java -version
-#       - pwd
-#       - whoami
-#       - ls -a
-#       - ls -asl
-#       - cd HelloWorldFunction
-#       - mvn clean package
-#       - chmod -R 777 ./
-#       - cd ..
-#       - ls -asl
 #       - export BUCKET=codepipeline-ap-northeast-1-679695920619
 #       - sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file packaged-template.yaml
 # artifacts:
@@ -38,6 +21,7 @@ phases:
        - mkdir target
        - chmod 777 target
        - chmod 777 *
+       - df -H
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
@@ -50,5 +34,5 @@ phases:
 artifacts:
   files:
     - target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
-    - packaged.yaml
+    - packaged-template.yaml
   discard-paths: yes

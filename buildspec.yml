@@ -34,42 +34,25 @@ phases:
       #  - systemctl start docker
        - pwd
        - ls -asl
-       - docker version
        - docker ps
-       - docker version
        #linux アップデート
-       - sudo yum -y update
-       #Extras Library からソフトウェアパッケージをインストール
-       - sudo amazon-linux-extras install -y docker
-       #usermod コマンドを使用して、ユーザーを docker グループに追加します。
-       - sudo usermod -aG docker ec2-user
-       #dockerのバージョン確認
-       - docker version
-       #dockerをシステムサービスとして起動する
-       - sudo systemctl start docker
-       - ps aux | grep docker
-       #dockerをLiux OSの起動サービスとして登録する。
-       - sudo systemctl enable docker
-       - sudo usermod -aG docker ec2-user
+       -yum -y update
        - sudo chmod 666 /var/run/docker.sock
-       - java -version
-       - pwd
-       - whoami
-       - ls -a
-       - ls -asl
-       - docker ps
-       - export PATH=/root/.sdkman/candidates/java/current/bin:${PATH} && echo ${PATH}
-       - source "$HOME/.sdkman/bin/sdkman-init.sh"
-       - source /etc/profile
-       - export PATH=/usr/local/aws:${PATH} && echo ${PATH}
-       - cd pac
+       - mkdir target
+       - chmod 777 target
+      #  - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
+      #  - docker rm spring-native-aws-lambda
+      #  - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
+      #  - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
   build:
     commands:
-       - mvn -Pnative -DskipTests package
+       - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
+       - docker rm spring-native-aws-lambda
+       - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
+       - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
        - aws cloudformation package --template-file cfn/template.yaml --output-template-file packaged.yaml --s3-bucket codepipeline-us-east-2-467398234360
-       
 artifacts:
   files:
-    - pac/target/cps-0.0.1-SNAPSHOT-native.zip
-    - pac/packaged.yaml
+    - target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
+    - packaged.yaml
   discard-paths: yes

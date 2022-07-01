@@ -14,27 +14,31 @@ phases:
     commands:
        - echo Logging in to Amazon ECR...
        - whoami
+       - yum install unzip -y
        - pwd
        - ls -asl
        - docker login -u adozoo -p BEADGCFadgcf4923
        - docker ps
        - chmod 666 /var/run/docker.sock
-       - mkdir target
-       - chmod 777 target
+       - mkdir pac
+       - chmod 777 pac
        - chmod 777 *
        - df -H
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
-       - ls -asl target/
-       - docker rm spring-native-aws-lambda
+       - ls -asl pac/
        - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
-       - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
-       - ls -asl target/
+       - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./pac/
+       - ls -asl pac/
        - pwd
-       - aws cloudformation package --template-file cfn/template.yaml --output-template-file packaged.yaml --s3-bucket codepipeline-us-east-2-467398234360
+       - cd pac/
+       - unzip spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
+       - mv spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip/* ./
+       - rm -rf spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
+       - cd ..
+       - aws cloudformation package --template-file template.yaml --output-template-file packaged-template.yaml --s3-bucket common-use-for-andre-and-all
 artifacts:
   files:
-    - target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
     - packaged-template.yaml
   discard-paths: yes

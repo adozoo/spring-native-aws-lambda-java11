@@ -1,0 +1,64 @@
+# version: 0.2
+# phases:
+#   install:
+#     runtime-versions:
+#       java: corretto8
+#   build:
+#     commands:
+#       - java -version
+#       - pwd
+#       - whoami
+#       - ls -a
+#       - ls -asl
+#       - cd HelloWorldFunction
+#       - mvn clean package
+#       - chmod -R 777 ./
+#       - cd ..
+#       - ls -asl
+#       - export BUCKET=codepipeline-ap-northeast-1-679695920619
+#       - sam package --template-file template.yaml --s3-bucket $BUCKET --output-template-file packaged-template.yaml
+# artifacts:
+#   files:
+#     - packaged-template.yaml
+version: 0.2
+env:
+  shell: bash
+phases:
+  pre_build:
+    commands:
+       #linux アップデート
+       - sudo yum -y update
+       #Extras Library からソフトウェアパッケージをインストール
+       - sudo amazon-linux-extras install -y docker
+       #usermod コマンドを使用して、ユーザーを docker グループに追加します。
+       - sudo usermod -aG docker ec2-user
+       #dockerのバージョン確認
+       - docker version
+       #dockerをシステムサービスとして起動する
+       - sudo systemctl start docker
+       - ps aux | grep docker
+       #dockerをLiux OSの起動サービスとして登録する。
+       - sudo systemctl enable docker
+       - sudo usermod -aG docker ec2-user
+       - sudo chmod 666 /var/run/docker.sock
+       - java -version
+       - pwd
+       - whoami
+       - ls -a
+       - ls -asl
+       - docker ps
+       - export PATH=/root/.sdkman/candidates/java/current/bin:${PATH} && echo ${PATH}
+       - source "$HOME/.sdkman/bin/sdkman-init.sh"
+       - source /etc/profile
+       - export PATH=/usr/local/aws:${PATH} && echo ${PATH}
+       - cd pac
+  build:
+    commands:
+       - mvn -Pnative -DskipTests package
+       - aws cloudformation package --template-file cfn/template.yaml --output-template-file packaged.yaml --s3-bucket codepipeline-us-east-2-467398234360
+       
+artifacts:
+  files:
+    - pac/target/cps-0.0.1-SNAPSHOT-native.zip
+    - pac/packaged.yaml
+  discard-paths: yes

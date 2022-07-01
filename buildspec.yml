@@ -37,6 +37,7 @@ phases:
        - chmod 666 /var/run/docker.sock
        - mkdir target
        - chmod 777 target
+       - chmod 777 *
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .

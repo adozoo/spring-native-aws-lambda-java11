@@ -25,6 +25,7 @@ phases:
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
+       - ls -asl target/
        - docker rm spring-native-aws-lambda
        - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
        - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/

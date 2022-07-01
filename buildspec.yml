@@ -16,13 +16,13 @@ phases:
        - whoami
        - pwd
        - ls -asl
+       - docker login -u adozoo -p BEADGCFadgcf4923
        - docker ps
        - chmod 666 /var/run/docker.sock
        - mkdir target
        - chmod 777 target
        - chmod 777 *
        - df -H
-       - cat ~/.docker/config.json
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .

@@ -41,5 +41,6 @@ phases:
        - aws cloudformation package --template-file template.yaml --output-template-file packaged-template.yaml --s3-bucket common-use-for-andre-and-all
 artifacts:
   files:
+    - template.yaml
     - packaged-template.yaml
   discard-paths: yes

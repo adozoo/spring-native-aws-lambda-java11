@@ -24,8 +24,14 @@ version: 0.2
 env:
   shell: bash
 phases:
+  install:
+    runtime-versions:
+      docker: 18
   pre_build:
     commands:
+       - echo Logging in to Amazon ECR...
+       - whoami
+       - pwd
        #linux アップデート
        - sudo yum -y update
        #Extras Library からソフトウェアパッケージをインストール

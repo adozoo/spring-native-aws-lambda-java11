@@ -31,25 +31,20 @@ phases:
     commands:
        - echo Logging in to Amazon ECR...
        - whoami
-      #  - systemctl start docker
        - pwd
        - ls -asl
        - docker ps
-       #linux アップデート
-       -yum -y update
+       - yum -y update
        - sudo chmod 666 /var/run/docker.sock
        - mkdir target
        - chmod 777 target
-      #  - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
-      #  - docker rm spring-native-aws-lambda
-      #  - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
-      #  - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
   build:
     commands:
        - docker build --no-cache --tag spring-native-aws-lambda:0.0.1-SNAPSHOT --file Dockerfile .
        - docker rm spring-native-aws-lambda
        - docker run --name spring-native-aws-lambda spring-native-aws-lambda:0.0.1-SNAPSHOT
        - docker cp spring-native-aws-lambda:app/target/spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip ./target/
+       - ls -asl target/
        - aws cloudformation package --template-file cfn/template.yaml --output-template-file packaged.yaml --s3-bucket codepipeline-us-east-2-467398234360
 artifacts:
   files:

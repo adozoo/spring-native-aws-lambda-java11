@@ -32,6 +32,9 @@ phases:
        - echo Logging in to Amazon ECR...
        - whoami
        - pwd
+       - ls -asl
+       - docker ps
+       - docker version
        #linux アップデート
        - sudo yum -y update
        #Extras Library からソフトウェアパッケージをインストール

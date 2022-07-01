@@ -17,7 +17,7 @@ phases:
        - yum install unzip -y
        - pwd
        - ls -asl
-       - docker login -u adozoo -p BEADGCFadgcf4923
+       - docker login -u cainz2022pac -p cainz2022pac
        - docker ps
        - chmod 666 /var/run/docker.sock
        - mkdir pac

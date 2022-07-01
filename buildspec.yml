@@ -35,7 +35,6 @@ phases:
        - cd pac/
        - unzip spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
        - ls -asl
-#       - mv spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip/* ./
        - rm -rf spring-native-aws-lambda-0.0.1-SNAPSHOT-native-zip.zip
        - cd ..
        - aws cloudformation package --template-file template.yaml --output-template-file packaged-template.yaml --s3-bucket common-use-for-andre-and-all

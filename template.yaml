@@ -8,7 +8,7 @@ Globals:
     Timeout: 60
 
 Resources:
-  HelloWorldFunction:
+  PACFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: pac
@@ -17,3 +17,10 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
+Outputs:
+  PACFunction:
+    Description: "PAC Lambda Function ARN"
+    Value: !GetAtt PACFunction.Arn
+  PACFunctionIamRole:
+    Description: "Implicit IAM Role created for PAC function"
+    Value: !GetAtt PACFunctionRole.Arn
